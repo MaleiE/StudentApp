@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -57,23 +56,21 @@ public class AppointServiceTest extends AbstractTransactionalTestNGSpringContext
     public void testAppointUpdate(){
         List<Appoint>listBefore = appointService.getAll();
         Appoint appoint = listBefore.get(listBefore.size()-1);
-        Student student = studentService.getAll().get(studentService.getAll().size()-1);
+        Subject subject1 = appoint.getSubject();
         Subject subject = subjectService.getAll().get(subjectService.getAll().size()-2);
         appoint.setSubject(subject);
         appointService.update(appoint);
         List<Appoint>listAfter = appointService.getAll();
         Appoint appoint1 = listAfter.get(listAfter.size()-1);
-        assertTrue(appoint1.getStudent().getFirsName().equals(appoint.getStudent().getFirsName()));
+        assertTrue(appoint1.getSubject().getNameSubject().equals(subject.getNameSubject()));
     }
 
     @Test
     public void testAppointDelete(){
         List<Appoint>listBefore = appointService.getAll();
-        System.out.println(listBefore.size());
         Appoint appoint = listBefore.get(listBefore.size()-1);
         appointService.delete(listBefore.get(listBefore.size()-1));
         List<Appoint>listAfter = appointService.getAll();
-        System.out.println(listAfter.size());
         Appoint appoint1 = listAfter.get(listAfter.size()-1);
         assertFalse(appoint.equals(appoint1));
         assertTrue(listBefore.size()-listAfter.size()==1);
@@ -81,7 +78,9 @@ public class AppointServiceTest extends AbstractTransactionalTestNGSpringContext
 
     @Test
     public void testAppointFindByKey(){
-        Appoint appoint = new Appoint(new Student("test","test",new LocalDate(10/2/1990)),new Subject("name"));
+        Student student = studentService.getAll().get(studentService.getAll().size()-1);
+        Subject subject = subjectService.getAll().get(subjectService.getAll().size()-1);
+        Appoint appoint = new Appoint(student,subject);
         appointService.save(appoint);
         List<Appoint> list = appointService.getAll();
         Appoint appoint1 = appointService.getByKey(list.get(list.size()-1).getId());
