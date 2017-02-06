@@ -1,25 +1,56 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" session="true"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html>
 <head>
-    <title>Students</title>
-    <link href="<c:url value="/css/bootstrap.min.css"/>" rel="stylesheet" type="text/css" />
-    <link href="<c:url value="/css/bootstrap-select.min.css"/>" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="<c:url value="/css/mycss.css"/>" type="text/css" />
+    <title>Студенты</title>
+    <link href="<c:url value="/resources/css/bootstrap.min.css"/>" rel="stylesheet" type="text/css" />
+    <link href="<c:url value="/resources/css/mycss.css"/>" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/resources/js/student.js"></script>
+    <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 </head>
 
 <body class="bod">
 
-
-<div class="container">
+<div  class="container">
     <%@include file="menu.jsp"%>
     <h4>Всего студентов ${students.size()}</h4>
     <h4>${mess}</h4>
-    <form  method="get">
-        <input type="hidden" name="url" value="/app/studentAdd">
-        <button  type="submit" class="btn btn-default btn-lg btn-block">Добавить студента <span class="glyphicon glyphicon-user"></span></button>
-    </form>
+    <button class="btn btn-default btn-lg btn-block" data-toggle="modal" data-target="#myModal">
+        Добавить студента <span class="glyphicon glyphicon-user"></span>
+    </button>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Добавить студента</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="error" class="error"></div>
+                    <form:form modelAttribute="student" id="saveStudentInput" method="get">
+                        <div class="form-group">
+                            <label for="firsNameInput" class="control-label">Имя:</label>
+                            <form:input path="firsName" type="text" id="firsNameInput" name="firsName" class="form-control" required="true"/>
+
+                            <label for="lastNameInput" class="control-label">Фамилия:</label>
+                            <form:input path="lastName" type="text" id="lastNameInput" name="lastName" class="form-control" required="true"/>
+
+                            <label for="yearRevenueInput" class="control-label">Год поступления:</label>
+                            <form:input path="yearRevenue" type="text" id="yearRevenueInput" name="yearRevenue" class="form-control" required="true"/>
+
+                            <br></br>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                            <input id="submit" type="submit" class="btn btn-primary" value="Добавить"/>
+                        </div>
+                    </form:form>
+                </div>
+            </div>
+        </div>
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>

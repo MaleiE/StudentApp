@@ -1,21 +1,21 @@
 package com.malei.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "subjects")
-public class Subject extends Model {
-
+public class Subject implements Serializable {
+    private Long id;
     private String nameSubject;
+
     public Subject() {
     }
 
     public Subject(Long id) {
-        super(id);
+        this.id=id;
     }
 
     public Subject(String nameSubject) {
@@ -23,9 +23,21 @@ public class Subject extends Model {
     }
 
     public Subject(Long id, String nameSubject) {
-        super(id);
+        this.id=id;
         this.nameSubject = nameSubject;
     }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "subject_id")
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Size(min = 3,max = 10)
     @Column(name = "subject_name")
     public String getNameSubject() {

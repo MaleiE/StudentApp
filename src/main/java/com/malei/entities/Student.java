@@ -1,31 +1,36 @@
 package com.malei.entities;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.*;
 
 @Entity
 @Table(name = "student")
-public class Student extends Model {
+public class Student implements Serializable {
 
+    private Long id; // Идентификатор
     private String firsName;
     private String lastName;
+    private String username; // Логин
+    private String password; // Пароль
+    private String confirmPassword; // Подтверждение пароля
     private LocalDate yearRevenue;
     private List<Appoint> appoints = new ArrayList<>(0);
+    private Set<Role> roles = new HashSet<>(); // Роли студента
 
     public Student() {
     }
 
     public Student(Long id) {
-        super(id);
+        this.id=id;
     }
 
     public Student(String firsName, String lastName, LocalDate yearRevenue) {
@@ -33,13 +38,78 @@ public class Student extends Model {
         this.lastName = lastName;
         this.yearRevenue = yearRevenue;
     }
+    public Student(String firsName, String lastName) {
+        this.firsName = firsName;
+        this.lastName = lastName;
+    }
 
     public Student(Long id, String firsName, String lastName, LocalDate yearRevenue) {
-        super(id);
+        this.id=id;
         this.firsName = firsName;
         this.lastName = lastName;
         this.yearRevenue = yearRevenue;
     }
+
+    public Student(Long id, String firsName, String lastName, String username, String password, String confirmPassword, LocalDate yearRevenue) {
+        this.id = id;
+        this.firsName = firsName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+        this.yearRevenue = yearRevenue;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "student_id")
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Column(name = "username", unique = true)
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Column(name = "password")
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Transient
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role",
+            joinColumns = { @JoinColumn(name = "student_id") },
+            inverseJoinColumns = { @JoinColumn(name = "role_id")})
+    @JsonBackReference
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @NotNull
     @Size(min = 3,max = 12)
     @Column(name = "first_name", nullable = false)
@@ -62,6 +132,8 @@ public class Student extends Model {
         this.lastName = lastName;
     }
 
+  //  @NotNull(message = "Заполни дату")
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     @Column(name = "enter_year", nullable = false)
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     public LocalDate getYearRevenue() {
@@ -97,7 +169,7 @@ public class Student extends Model {
         return Objects.hash(this.getId(),firsName, lastName, yearRevenue, appoints);
     }
 
-   @Override
+  /* @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Student{");
         sb.append("id='").append(this.getId()).append('\'');
@@ -107,5 +179,5 @@ public class Student extends Model {
         sb.append(", appoints=").append(appoints);
         sb.append('}');
         return sb.toString();
-    }
+    }*/
 }

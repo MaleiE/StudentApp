@@ -41,4 +41,9 @@ public class SubjectService implements GenericService<Subject,Long> {
     public Subject getByKey(Long key) {
         return subjectDao.getByKey(key);
     }
+
+    @Override
+    public Subject findByUsername(String username) {
+        return null;
+    }
 }

@@ -1,6 +1,7 @@
 package com.malei.dao;
 
 
+import com.malei.entities.Student;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -53,6 +54,30 @@ public abstract class AbstractDao<T extends Serializable,K> implements GenericDa
 
         return (T) criteria.uniqueResult();
     }
+/*
+    @SuppressWarnings("unchecked")
+    public T getByUsername(String username) {
+        System.out.println("AbstractDao : "+username);
+        Criteria criteria = getSession().createCriteria(Student.class);
+        criteria.add(Restrictions.eq("username", username));
+
+        System.out.println("Критерия : "+criteria.uniqueResult());
+        return (T) criteria.uniqueResult();
+    }
+
+*/
+    public T getByUsername(String username) {
+        List<T> list;
+        list = getListByUsername(getSession(), username);
+
+        if (list.size() > 0){
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
+    abstract List<T> getListByUsername(Session session, String username);
 
     abstract Criteria getCriteria(Session session);
+
 }

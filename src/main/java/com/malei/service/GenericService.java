@@ -14,4 +14,7 @@ public interface GenericService<T,K> {
     List<T> getAll();
 
     T getByKey(K key);
+
+    T findByUsername(String username);
+
 }

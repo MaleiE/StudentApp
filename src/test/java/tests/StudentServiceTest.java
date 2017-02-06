@@ -1,5 +1,5 @@
 package tests;
-
+/*
 import com.malei.entities.Student;
 import com.malei.service.GenericService;
 import org.joda.time.LocalDate;
@@ -86,3 +86,4 @@ public class StudentServiceTest extends AbstractTransactionalTestNGSpringContext
         assertTrue(student.getYearRevenue()==student1.getYearRevenue());
     }
 }
+*/

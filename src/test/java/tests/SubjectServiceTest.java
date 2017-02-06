@@ -1,5 +1,5 @@
 package tests;
-
+/*
 
 import com.malei.entities.Subject;
 import com.malei.service.GenericService;
@@ -68,3 +68,4 @@ public class SubjectServiceTest extends AbstractTransactionalTestNGSpringContext
         assertTrue(subject.getNameSubject().equals(subject1.getNameSubject()));
     }
 }
+*/

@@ -42,4 +42,9 @@ public class AppointService implements GenericService<Appoint,Long> {
     public Appoint getByKey(Long key) {
         return appointDao.getByKey(key);
     }
+
+    @Override
+    public Appoint findByUsername(String username) {
+        return null;
+    }
 }

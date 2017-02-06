@@ -16,4 +16,5 @@ public interface GenericDao<T extends Serializable,K> {
 
     public T getByKey(K key);
 
+
 }
